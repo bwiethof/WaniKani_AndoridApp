@@ -1,4 +1,4 @@
-package wanikani
+package wanikaniAPI
 /* Author: Benedikt Wiethof
 * Creation Date:
 * Last Modified:
