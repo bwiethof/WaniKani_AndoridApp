@@ -1,27 +1,11 @@
-package Types
-
+package wanikani
+/* Author: Benedikt Wiethof
+* Creation Date:
+* Last Modified:
+* description: Beschreibung
+*
+* */
 import com.google.gson.annotations.SerializedName
-
-/////////////////////
-// Meta data classes
-data class CollectionMeta(val obj: String, val url: String, val page: Page, val totCoun: Int, val dateUpd: String?) {
-    companion object{ val querys = arrayOf("object","url","pages","total_count","data_updated_at") }
-    data class Page(val per_page: String, val next_url: String?, val previous_url: String?)
-}
-//
-// Meta Data in every Ressource Object returned from API
-data class RessourceMeta(val id : String?, val obj: String?, val url: String?, val dateUpd: String?) {
-    companion object{ val querys = arrayOf("id","object","url","data_updated_at") }
-}
-////////////////////////////////////
-// Basic generic response types
-//
-// Ressource containing common meta Data and Ressource specific Data
-data class Ressource<T>(val meta: RessourceMeta, val data: T)
-//
-// Collection containing Collection meta Data and a Array of Ressources deifned as above
-data class Collection<T>(val meta: CollectionMeta?,val data: Array<Ressource<T>?>?)
-///////////////////////////////////
 // Objects Models based on WaniKani API
 //
 // Assignments represent progress of specific subjects as lessons and reviews
@@ -36,7 +20,8 @@ data class User(val id: String, val username: String, val level: Int, val profil
 //Subject Types
 //
 // Subject divided ans common and specific Data
-data class Subject<T>(val subjectData: SubjectData,val specificData: T)
+data class Subject<T: ISubject>(val subjectData: SubjectData,val specificData: T)
+interface ISubject
 //
 // Common Data in every Subject
 data class SubjectData(val characters: String, @SerializedName("auxiliary_name") val auxMeanings: Array<AuxMeaning>, val meanings: Array<Meaning>) {
@@ -45,20 +30,26 @@ data class SubjectData(val characters: String, @SerializedName("auxiliary_name")
 }
 //
 // Specific Data for Radicals, generic for image type(svg/png)
-data class Radical<T: Radical.ImageMeta>(@SerializedName("amalgamation_subject_ids") val alamagationIds:Array<Int>, val characters: String?,@SerializedName("character_images") val images: Array< Image<T> >) {
-    interface ImageMeta
-    data class Image<T: ImageMeta>(val url: String, @SerializedName("content_type") val contentType: String, val metadata: T)
-    data class SVG(@SerializedName("inline_styles") val styles: Boolean): ImageMeta
-    data class PNG(val color: String, val dimensions: String, @SerializedName("sytle_name") val styleName: String) :ImageMeta
+data class Radical(@SerializedName("amalgamation_subject_ids") val alamagationIds:Array<Int>, val characters: String?,@SerializedName("character_images") val images: Array< Image >?): ISubject {
+    data class Image(val url: String, @SerializedName("content_type") val contentType: String, val metadata: TypeSpecific) {
+        companion object{ val imageTypes = arrayOf("SVG", "PNG") }
+    }
+    //
+    // holds Data for specific Type
+    data class TypeSpecific(val svgData: SVG?, val pngData: PNG?)
+    //
+    // Image specific Data depending on type form server
+    data class SVG(@SerializedName("inline_styles") val styles: Boolean)
+    data class PNG(val color: String, val dimensions: String, @SerializedName("sytle_name") val styleName: String)
 }
 //
 // Specific Data for Kanjis
-data class Kanji(@SerializedName("amalgamation_subject_ids") val alamagationIds:Array<Int>, @SerializedName("component_subject_ids") val componentIds: Array<Int>, @SerializedName("meaning_hint") val meaningHint: String?, @SerializedName("reading_hint") val readingHint: String?, @SerializedName("reading_mnemonic") val readingMnemonic: String, val readings: Array<Reading>, @SerializedName("visually_similar_subject_ids") val visuallySimilarIds: Array<Int>) {
+data class Kanji(@SerializedName("amalgamation_subject_ids") val alamagationIds:Array<Int>, @SerializedName("component_subject_ids") val componentIds: Array<Int>, @SerializedName("meaning_hint") val meaningHint: String?, @SerializedName("reading_hint") val readingHint: String?, @SerializedName("reading_mnemonic") val readingMnemonic: String, val readings: Array<Reading>, @SerializedName("visually_similar_subject_ids") val visuallySimilarIds: Array<Int>): ISubject {
     data class Reading(val reading: String, val primary: Boolean, @SerializedName("accepted_answer") val acceptedAnswer: Boolean, val type: String)
 }
 //
 // Specific Data for Vocabularies
-data class Vocabulary(@SerializedName("component_subject_ids") val componentIds: Array<Int>, @SerializedName("context_sentences") val contextSentences: Array<Context>, @SerializedName("meaning_mnemonic") val meaningMnemonic: String, @SerializedName("parts_of_speech") val partsOfSpeech: Array<String>, @SerializedName("pronunciation_audios") val pronunciationAudios: Array<Pronunciation>, val readings: Array<Reading>, @SerializedName("reading_mnemonic") val readingMnemonic: String){
+data class Vocabulary(@SerializedName("component_subject_ids") val componentIds: Array<Int>, @SerializedName("context_sentences") val contextSentences: Array<Context>, @SerializedName("meaning_mnemonic") val meaningMnemonic: String, @SerializedName("parts_of_speech") val partsOfSpeech: Array<String>, @SerializedName("pronunciation_audios") val pronunciationAudios: Array<Pronunciation>, val readings: Array<Reading>, @SerializedName("reading_mnemonic") val readingMnemonic: String): ISubject{
     data class Reading(val reading: String, val primary: Boolean, @SerializedName("accepted_answer") val acceptedAnswer: Boolean, val type: String)
     data class Context(val en: String, val ja: String)
     data class Pronunciation(val url: String, @SerializedName("content_type") val contentType: String, val meta: Meta) {
