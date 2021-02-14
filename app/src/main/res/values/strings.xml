@@ -1,10 +1,38 @@
 <resources>
     <string name="app_name">WaniKani SRS App</string>
-    <!-- TODO: Remove or change this placeholder text -->
+
+    <!-- Navigation -->
+    <string name="nav_dashboard">Dashboard</string>
+    <string name="nav_profile">Profile</string>
+
+    <!-- Dashboard Fragment-->
+
     <string name="dashboard_fragment">Hello dashboard fragment</string>
     <string name="dashboard_fragment_label">Dashboard</string>
-    <string name="text_label_1">option1</string>
-    <string name="text_label_2">option1</string>
+
+    <!-- Profile Fragment-->
+    <string name="profile_fragment_label">Profile</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- Settings Fragment -->
+    <string name="settings_fragment">Settings</string>
+    <string name="settings_fragment_label">Settings</string>
+    <string name="content_description_settings">Settings</string>
+
+    <!-- Preference Titles -->
+    <string name="messages_header">Messages</string>
+    <string name="sync_header">Sync</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
 
 
 </resources>

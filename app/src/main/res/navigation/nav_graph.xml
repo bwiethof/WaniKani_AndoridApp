@@ -3,12 +3,25 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph.xml"
-    android:label="@string/dashboard_fragment_label"
+    android:label="@string/profile_fragment_label"
     app:startDestination="@id/dashboardFragment">
 
     <fragment
         android:id="@+id/dashboardFragment"
         android:name="org.bemi.wanikanisrsapp.DashboardFragment"
-        android:label="Dashboard"
+        android:label="@string/dashboard_fragment_label"
         tools:layout="@layout/fragment_dashboard" />
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="org.bemi.wanikanisrsapp.ProfileFragment"
+        android:label="@string/profile_fragment_label"
+        tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="org.bemi.wanikanisrsapp.SettingsFragment"
+        android:label="@string/settings_fragment_label" />
+
+    <!--Global action-->
+    <action android:id="@+id/open_settings_fragment"
+        app:destination="@id/settingsFragment"/>
 </navigation>
