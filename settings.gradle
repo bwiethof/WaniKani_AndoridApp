@@ -1,0 +1,2 @@
+include ':app', ':WaniKaniAPI'
+rootProject.name = "WaniKani SRS App"
