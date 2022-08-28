@@ -1,7 +1,9 @@
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonObject
 import io.ktor.client.*
-import io.ktor.client.features.json.*
+import io.ktor.client.call.*
+import io.ktor.client.plugins.contentnegotiation.*
+import io.ktor.serialization.gson.*
 import io.ktor.client.request.*
 import kotlinx.coroutines.*
 import wanikaniAPI.*
@@ -25,24 +27,20 @@ fun main(args: Array<String>) {
 
 suspend fun TestClientFun() {
     val client = HttpClient {
-        install(JsonFeature) {
-            serializer = GsonSerializer {
-                setPrettyPrinting()
-                disableHtmlEscaping()
-            }
+        install(ContentNegotiation) {
+            gson()
         }
     }
     val token = "a7543476-9981-49c7-905b-3c316acee7f7"
     val query: String = Querys.base + Querys.Subjects.base
-    val req = runBlocking {
-        client.get<JsonObject>(query) {
+    val req =
+        client.get(query) {
             headers {
                 append("Wanikani-Revision", "20170710")
                 append("Authorization", "Bearer %s".format(token))
             }
         }
-    }
-    val testRadicalData = req.get("data").asJsonArray[0].asJsonObject.get("data")
+    val testRadicalData = req.body<JsonObject>()
     val builder = GsonBuilder()
     builder.registerTypeAdapter(Radical::class.java,RadicalDeserializer())
     val bla =builder.create()

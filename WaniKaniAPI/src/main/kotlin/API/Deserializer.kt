@@ -7,6 +7,7 @@ import com.google.gson.JsonElement
 import wanikaniAPI.Radical
 import java.lang.reflect.Type
 
+@Suppress("UNCHECKED_CAST")
 class MetaDeserializer<T>: JsonDeserializer<T> {
     override fun deserialize(json: JsonElement?, typeOfT: Type?, context: JsonDeserializationContext?): T {
         val obj = json?.asJsonObject ?: throw  Exception("JsonElement was null.")
@@ -34,7 +35,7 @@ class RadicalDeserializer: JsonDeserializer<Radical>{
         //
         // Get image specific data and allocte memory
         val imageData = json!!.asJsonObject.get("character_images").asJsonArray
-        var images = ArrayList<Radical.Image>(0)
+        val images = ArrayList<Radical.Image>(0)
         //
         // Loop over all image objects
         for(i in 0 until imageData.size()) {

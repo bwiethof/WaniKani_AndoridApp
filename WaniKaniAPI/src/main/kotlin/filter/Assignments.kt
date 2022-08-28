@@ -62,11 +62,11 @@ class Assignments(service: WaniKaniService): AFilter(service = service) {
         var assignmentCollection = service.getAssignments(contentType)
         //
         // remove reouscre meta Data forr return type
-        var res = getArrayOfAssignments(assignmentCollection.data)
+        val res = getArrayOfAssignments(assignmentCollection.data)
         //
         // Check if more Assignments are available
         while(assignmentCollection.meta?.page?.next_url != null) {
-            val pageUrl = assignmentCollection.meta!!.page!!.next_url!!
+            val pageUrl = assignmentCollection.meta!!.page.next_url!!
             assignmentCollection = service.getAssignments(contentType, pageUrl)
             res!!.addAll(getArrayOfAssignments(assignmentCollection.data)!!)
         }
