@@ -18,8 +18,14 @@ class MetaDeserializer<T>: JsonDeserializer<T> {
                     CollectionMeta.querys[3]).asInt,obj.get(CollectionMeta.querys[4]).asString) as T
             }
             else -> {
-                RessourceMeta(obj.get(RessourceMeta.querys[0]).asString,obj.get(RessourceMeta.querys[1]).asString,obj.get(
-                    RessourceMeta.querys[2]).asString,obj.get(RessourceMeta.querys[3]).asString) as T
+                ResourceMeta(
+                    obj.get(ResourceMeta.querys[0]).asString,
+                    obj.get(ResourceMeta.querys[1]).asString,
+                    obj.get(
+                        ResourceMeta.querys[2]
+                    ).asString,
+                    obj.get(ResourceMeta.querys[3]).asString
+                ) as T
             }
         }
     }
