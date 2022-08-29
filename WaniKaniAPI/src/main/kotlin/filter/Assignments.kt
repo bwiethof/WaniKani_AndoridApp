@@ -5,9 +5,9 @@
 package wanikaniAPI.filter
 
 import kotlinx.coroutines.*
+import wanikaniAPI.API.Resource
+import wanikaniAPI.API.WaniKaniService
 import wanikaniAPI.Assignment
-import wanikaniAPI.API.*
-import kotlin.collections.ArrayList
 
 
 class Assignments(service: WaniKaniService): AFilter(service = service) {
@@ -36,22 +36,23 @@ class Assignments(service: WaniKaniService): AFilter(service = service) {
     fun updateLessons() {
         lessons = getCurrentAssignments(AssignmentContent.LESSON)
     }
+
     //
     //
     fun getCurrent(type: AssignmentContent): Array<Assignment>? {
-        return when(type) {
-            AssignmentContent.LESSON->lessons
-            AssignmentContent.REVIEW->reviews
-            AssignmentContent.ALL-> (lessons!!.toList() + reviews!!.toList()).toTypedArray()
+        return when (type) {
+            AssignmentContent.LESSON -> lessons
+            AssignmentContent.REVIEW -> reviews
+            AssignmentContent.ALL -> (lessons!!.toList() + reviews!!.toList()).toTypedArray()
         }
     }
 
-    private fun getArrayOfAssignments(data: Array<Ressource<Assignment>?>?) : ArrayList<Assignment>? {
-        if(data == null)
+    private fun getArrayOfAssignments(data: Array<Resource<Assignment>?>?): ArrayList<Assignment>? {
+        if (data == null)
             return null
-        var res: ArrayList<Assignment> = ArrayList()
-        for(i in 0 until data!!.size) {
-            res.add(data[i]!!.data)
+        val res: ArrayList<Assignment> = ArrayList()
+        for (element in data) {
+            res.add(element!!.data)
         }
         return res
     }
@@ -73,13 +74,14 @@ class Assignments(service: WaniKaniService): AFilter(service = service) {
         return res?.toTypedArray()
     }
 
+
     override suspend fun updater() {
 
         while(!shutDown) {
             if(needsUpdate) {
                 //
                 // Get current availabe Lessons
-                val LesseonRequest = GlobalScope.async(Dispatchers.IO) {
+                val LesseonRequest = GlobalScope.async(Dispatchers.Unconfined) {
                     getCurrentAssignments(AssignmentContent.LESSON)
                 }
                 //
