@@ -1,24 +1,20 @@
 package org.bemi.wanikanisrsapp.ui.main.profile
 
 import android.content.Intent
-import android.media.session.MediaSession
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.*
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import org.bemi.wanikanisrsapp.data.TokenStore
-import org.bemi.wanikanisrsapp.ui.userToken.UserTokenActivity
 import org.bemi.wanikanisrsapp.databinding.FragmentProfileBinding
+import org.bemi.wanikanisrsapp.ui.userToken.UserTokenActivity
 
 class ProfileFragment : Fragment() {
 
     private var _binding: FragmentProfileBinding? = null
-    private var _token: String? = TokenStore.get()
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -35,20 +31,21 @@ class ProfileFragment : Fragment() {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        binding.buttonSetToken.visibility = GONE
-        binding.buttonSetToken.setOnClickListener {
+        val textView: TextView = binding.textProfile
+        profileViewModel.text.observe(viewLifecycleOwner) {
+            textView.text = it
+        }
+
+        val button: Button = binding.buttonSetToken
+        profileViewModel.buttonVisibility.observe(viewLifecycleOwner) {
+            button.visibility = it
+        }
+
+        button.setOnClickListener {
             requireActivity().run {
                 val intent = Intent(this, UserTokenActivity::class.java)
                 startActivity(intent)
             }
-        }
-
-        val textView: TextView = binding.textProfile
-        if (_token != null) {
-            textView.text = "Your user token is: ${TokenStore.get()}"
-        } else {
-            textView.text = "No user token available."
-            binding.buttonSetToken.visibility = VISIBLE
         }
 
         return root
