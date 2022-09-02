@@ -1,4 +1,4 @@
-package org.bemi.wanikanisrsapp.authentication
+package org.bemi.wanikanisrsapp.ui.userToken
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

@@ -1,4 +1,4 @@
-package org.bemi.wanikanisrsapp.authentication
+package org.bemi.wanikanisrsapp.ui.userToken
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,11 +6,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
-import org.bemi.wanikanisrsapp.DashboardActivity
+import org.bemi.wanikanisrsapp.ui.main.DashboardActivity
 import org.bemi.wanikanisrsapp.R
-import org.bemi.wanikanisrsapp.TokenStore
+import org.bemi.wanikanisrsapp.data.TokenStore
 import org.bemi.wanikanisrsapp.databinding.FragmentEnterTokenBinding
 
 /**

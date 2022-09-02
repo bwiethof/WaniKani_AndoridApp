@@ -1,4 +1,4 @@
-package org.bemi.wanikanisrsapp.ui.profile
+package org.bemi.wanikanisrsapp.ui.main.profile
 
 import android.content.Intent
 import android.media.session.MediaSession
@@ -7,11 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.*
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import org.bemi.wanikanisrsapp.TokenStore
-import org.bemi.wanikanisrsapp.authentication.UserTokenActivity
+import org.bemi.wanikanisrsapp.data.TokenStore
+import org.bemi.wanikanisrsapp.ui.userToken.UserTokenActivity
 import org.bemi.wanikanisrsapp.databinding.FragmentProfileBinding
 
 class ProfileFragment : Fragment() {

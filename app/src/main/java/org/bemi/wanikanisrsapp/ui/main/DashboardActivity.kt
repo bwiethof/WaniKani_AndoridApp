@@ -1,4 +1,4 @@
-package org.bemi.wanikanisrsapp
+package org.bemi.wanikanisrsapp.ui.main
 
 import android.os.Bundle
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -7,6 +7,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import org.bemi.wanikanisrsapp.R
 import org.bemi.wanikanisrsapp.databinding.ActivityDashboardBinding
 
 class DashboardActivity : AppCompatActivity() {

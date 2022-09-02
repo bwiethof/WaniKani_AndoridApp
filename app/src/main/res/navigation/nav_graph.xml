@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/FirstFragment"
-        android:name="org.bemi.wanikanisrsapp.authentication.EnterTokenFragment"
+        android:name="org.bemi.wanikanisrsapp.ui.userToken.EnterTokenFragment"
         android:label="@string/first_fragment_label"
         tools:layout="@layout/fragment_enter_token">
 
@@ -17,7 +17,7 @@
     </fragment>
     <fragment
         android:id="@+id/SecondFragment"
-        android:name="org.bemi.wanikanisrsapp.authentication.SecondFragment"
+        android:name="org.bemi.wanikanisrsapp.ui.userToken.SecondFragment"
         android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_second">
 

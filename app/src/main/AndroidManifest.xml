@@ -7,12 +7,12 @@
         android:label="@string/app_name"
         android:theme="@style/Theme.WaniKaniSRSApp">
         <activity
-            android:name=".authentication.UserTokenActivity"
+            android:name="org.bemi.wanikanisrsapp.ui.userToken.UserTokenActivity"
             android:exported="false"
             android:label="@string/title_activity_user_token"
             android:theme="@style/Theme.WaniKaniSRSApp.NoActionBar" />
         <activity
-            android:name=".DashboardActivity"
+            android:name=".ui.main.DashboardActivity"
             android:exported="true"
             android:label="@string/title_activity_dashboard">
             <intent-filter>

@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="org.bemi.wanikanisrsapp.ui.home.HomeFragment"
+        android:name="org.bemi.wanikanisrsapp.ui.main.home.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="org.bemi.wanikanisrsapp.ui.dashboard.DashboardFragment"
+        android:name="org.bemi.wanikanisrsapp.ui.main.dashboard.DashboardFragment"
         android:label="@string/title_dashboard"
         tools:layout="@layout/fragment_dashboard" />
 
     <fragment
         android:id="@+id/navigation_profile"
-        android:name="org.bemi.wanikanisrsapp.ui.profile.ProfileFragment"
+        android:name="org.bemi.wanikanisrsapp.ui.main.profile.ProfileFragment"
         android:label="@string/title_profile"
         tools:layout="@layout/fragment_profile" />
 </navigation>

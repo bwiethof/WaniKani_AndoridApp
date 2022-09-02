@@ -1,7 +1,6 @@
-package org.bemi.wanikanisrsapp.authentication
+package org.bemi.wanikanisrsapp.ui.userToken
 
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
