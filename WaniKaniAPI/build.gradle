@@ -12,10 +12,6 @@ plugins {
 group = 'me.bene'
 version = '1.0-SNAPSHOT'
 
-repositories {
-    mavenCentral()
-}
-
 dependencies {
     def coroutines_version = '1.5.1'
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
