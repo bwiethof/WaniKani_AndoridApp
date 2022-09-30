@@ -33,5 +33,26 @@ abstract class Subject {
 
     @Serializable
     data class AuxiliaryMeaning(val meaning: String, val type: String)
+
+    enum class Type {
+        RADICAL {
+            override fun toString(): String {
+                return super.toString().lowercase()
+            }
+        },
+        REVIEW {
+            override fun toString(): String {
+                return super.toString().lowercase()
+            }
+        },
+        LESSON {
+            override fun toString(): String {
+                return super.toString().lowercase()
+            }
+        }
+    }
+
 }
+
+
 
