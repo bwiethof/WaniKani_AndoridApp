@@ -5,12 +5,22 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Resource<T>(
-    val id: Int,
+    val id: Int?,
     @SerialName("object") val obj: String,
     val url: String,
     val data_updated_at: String,
     val data: T
 )
+
+@Serializable
+data class Report<T>(
+    val data_updated_at: String,
+    val url: String,
+    @SerialName("object") val obj: String,
+    val data: T
+) {
+
+}
 
 @Serializable
 data class Collection<T>(
