@@ -19,7 +19,6 @@ private const val subjectTypesParam = "subject_types"
 private const val unlockedParam = "unlocked"
 private const val updatedAfterParam = "updated_after"
 
-
 // TODO: implement logic for assignments level 1->UserLevel
 // ref: https://docs.api.wanikani.com/20170710/#get-all-assignments
 
@@ -94,9 +93,6 @@ class AssignmentsQueryBuilder : QueryBuilder() {
         return this
     }
 
-    fun withId(id: Int): AssignmentsQueryBuilder = this.withIds(listOf(id))
-
-
     fun isImmediatelyAvailableForLessons(immediatelyAvailableForLessons: Boolean): AssignmentsQueryBuilder {
         this.immediatelyAvailableForLessons = immediatelyAvailableForLessons
         return this
@@ -131,7 +127,6 @@ class AssignmentsQueryBuilder : QueryBuilder() {
     }
 
     fun withSubjectId(id: Int): AssignmentsQueryBuilder = this.withSubjectIds(listOf(id))
-
 
     fun withSubjectTypes(subjectTypes: List<Subject.Type>): AssignmentsQueryBuilder {
         this.subjectTypes =

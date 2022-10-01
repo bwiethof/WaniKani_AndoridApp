@@ -28,8 +28,6 @@ class SubjectQueryBuilder : QueryBuilder() {
         return this
     }
 
-    fun withId(id: Int): SubjectQueryBuilder = withIds(listOf(id))
-
     fun withTypes(types: List<Subject.Type>): SubjectQueryBuilder {
         this.types = if (this.types.isNullOrEmpty()) types.toMutableList() else this.types!!.addIfNotExist(types)
         return this
