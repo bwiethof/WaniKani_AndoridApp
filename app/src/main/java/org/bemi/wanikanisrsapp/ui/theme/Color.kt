@@ -1,4 +1,4 @@
-package org.bemi.wanikanisrsapp.ui.mainCompose.ui.theme
+package org.bemi.wanikanisrsapp.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
