@@ -22,14 +22,13 @@ private const val updatedAfterParam = "updated_after"
 // TODO: implement logic for assignments level 1->UserLevel
 // ref: https://docs.api.wanikani.com/20170710/#get-all-assignments
 
-class AssignmentsQueryBuilder : QueryBuilder() {
+class AssignmentsQueryBuilder : CollectionQueryBuilder() {
     override var route: String = assignmentRoute
 
     private var availableAfter: Date? = null
     private var availableBefore: Date? = null
     private var burned: Boolean? = null
     private var hidden: Boolean? = null
-    private var ids: List<Int>? = null
     private var immediatelyAvailableForLessons: Boolean? = null
     private var immediatelyAvailableForReview: Boolean? = null
     private var inReview: Boolean? = null
@@ -38,13 +37,11 @@ class AssignmentsQueryBuilder : QueryBuilder() {
     private var subjectIds: List<Int>? = null
     private var subjectTypes: MutableList<Subject.Type>? = null
     private var unlocked: Boolean? = null
-    private var updatedAfter: Date? = null
 
     override fun buildInternal(): QueryBuilder {
         availableAfter?.let { parameters.put(availableAfterParam, availableAfter!!) }
         burned?.let { parameters.put(burnedParam, burned.toString()) }
         hidden?.let { parameters.put(hiddenParam, hidden.toString()) }
-        ids?.let { parameters.put(idsParam, ids!!.joinToString(",")) }
         immediatelyAvailableForLessons?.let {
             if (immediatelyAvailableForLessons!!)
                 parameters[immediatelyAvailableForLessonsParam] = ""
@@ -63,7 +60,6 @@ class AssignmentsQueryBuilder : QueryBuilder() {
                 subjectTypes!!.joinToString { type: Subject.Type -> type.toString() })
         }
         unlocked?.let { parameters.put(unlockedParam, unlocked.toString()) }
-        updatedAfter?.let { parameters.put(updatedAfterParam, updatedAfter!!) }
 
         return this
     }
@@ -85,11 +81,6 @@ class AssignmentsQueryBuilder : QueryBuilder() {
 
     fun isHidden(hidden: Boolean): AssignmentsQueryBuilder {
         this.hidden = hidden
-        return this
-    }
-
-    fun withIds(ids: List<Int>): AssignmentsQueryBuilder {
-        this.ids = if (this.ids.isNullOrEmpty()) ids else this.ids!!.plus(ids)
         return this
     }
 
@@ -142,11 +133,6 @@ class AssignmentsQueryBuilder : QueryBuilder() {
 
     fun isUnlocked(unlocked: Boolean): AssignmentsQueryBuilder {
         this.unlocked = unlocked
-        return this
-    }
-
-    fun wasUpdatedAfter(updatedAfter: Date): AssignmentsQueryBuilder {
-        this.updatedAfter = updatedAfter
         return this
     }
 }
