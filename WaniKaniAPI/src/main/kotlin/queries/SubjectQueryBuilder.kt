@@ -12,7 +12,7 @@ private const val hiddenParam = "hidden"
 private const val updatedAfterParam = "updated_after"
 
 
-class SubjectQueryBuilder : QueryBuilder() {
+class SubjectQueryBuilder : CollectionQueryBuilder() {
     override var route = subjectRoute
 
     private var ids: List<Int>? = null
@@ -23,10 +23,6 @@ class SubjectQueryBuilder : QueryBuilder() {
     private var updatedAfter: String? = null
 
 
-    fun withIds(ids: List<Int>): SubjectQueryBuilder {
-        this.ids = if (this.ids.isNullOrEmpty()) ids else this.ids!!.plus(ids)
-        return this
-    }
 
     fun withTypes(types: List<Subject.Type>): SubjectQueryBuilder {
         this.types = if (this.types.isNullOrEmpty()) types.toMutableList() else this.types!!.addIfNotExist(types)
@@ -55,15 +51,8 @@ class SubjectQueryBuilder : QueryBuilder() {
         return this
     }
 
-    fun updatedAfter(updatedAfter: String): SubjectQueryBuilder {
-        this.updatedAfter = updatedAfter
-        return this
-    }
-
-
     override fun buildInternal(): SubjectQueryBuilder {
-
-        if (!ids.isNullOrEmpty()) this.parameters[idsParam] = ids!!.joinToString(",")
+        super.buildInternal()
 
         if (!types.isNullOrEmpty()) this.parameters[typesParam] =
             types!!.joinToString(transform = { type: Subject.Type -> type.toString() })
@@ -73,8 +62,6 @@ class SubjectQueryBuilder : QueryBuilder() {
         if (!levels.isNullOrEmpty()) this.parameters[levelsParam] = levels!!.joinToString(",")
 
         if (hidden != null) this.parameters[hiddenParam] = hidden!!.toString()
-
-        if (updatedAfter != null) this.parameters[updatedAfterParam] = updatedAfter!!
 
         return this
     }
