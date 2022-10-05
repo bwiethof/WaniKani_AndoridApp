@@ -11,9 +11,13 @@ class GeneralQueryBuilder {
     }
 
     fun where(initializer: ParameterComposition.() -> Unit) {
-        if (queryBuilderImpl === null)
+        if (queryBuilderImpl?.where(initializer) === null)
             throw IllegalStateException("Cannot apply resource filter without resource")
-        queryBuilderImpl?.with(initializer)
+    }
+
+    fun matches(id: Int) {
+        if (queryBuilderImpl?.let { it.specificResourceId = id } === null)
+            throw IllegalStateException("Cannot request specific resource without specifying")
     }
 
     fun build(): QueryBuilderBase {
