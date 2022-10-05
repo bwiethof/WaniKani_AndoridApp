@@ -8,7 +8,7 @@ class ParameterComposition(private val allowedParameter: List<ParameterType> = e
     }
 
     private fun addCondition(condition: FilterParameter, value: Any?) {
-        if (!allowedParameter.contains(condition.parameterType))
+        if (condition.parameterType !in allowedParameter)
             throw IllegalArgumentException("Parameter ${condition.parameterType} not allowed. ${if (allowedParameter.isEmpty()) "No Parameter accepted" else "Only ${allowedParameter.joinToString()} allowed"}")
         condition.setValue(value)
         conditions.add(condition)
