@@ -1,4 +1,6 @@
-import queries.StudyMaterialQueryBuilder
+import queries.Resource
+import queries.filters.ParameterType
+import queries.query
 
 fun main(args: Array<String>) {
     println("Hello World!")
@@ -7,7 +9,13 @@ fun main(args: Array<String>) {
     val token = "a7543476-9981-49c7-905b-3c316acee7f7"
     service.init(token)*/
 
-
+    val assignmentParameters =  query {
+        from(Resource.Assignments)
+        where {
+            ParameterType.Unlocked eq true
+            ParameterType.SubjectIds eq listOf(1, 2, 3)
+        }
+    }.build()
 }
 
 
