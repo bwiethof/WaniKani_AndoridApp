@@ -3,8 +3,8 @@ package queries
 import models.Subject
 
 fun MutableList<Subject.Type>.addIfNotExist(other: List<Subject.Type>): MutableList<Subject.Type> {
-    other.forEach { it ->
-        if (this.contains(it))
+    other.forEach {
+        if (it !in this)
             this.add(it)
     }
     return this
