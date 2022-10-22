@@ -1,42 +1,31 @@
 package queries
 
+import queries.filters.ParameterComposition
 
-interface SubQueryBuilder {
-    fun build(): Map<String, String>
-}
+class QueryBuilder {
+    private var queryBuilderImpl: QueryBuilderBase? = null
 
-abstract class QueryBuilder {
-    abstract var route: String
-        protected set
-    val parameters = mutableMapOf<String, String>()
-    private val subQueryBuilders = mutableListOf<SubQueryBuilder>()
-    private var specificID: Int? = null
-
-
-    protected fun registerSubQueryBuilder(subQueryBuilder: SubQueryBuilder) {
-        subQueryBuilders.add(subQueryBuilder)
-    }
-    open fun withSpecificId(id: Int): QueryBuilder {
-        specificID = id
-        return this
+    fun from(resource: Resource): QueryBuilderBase {
+        queryBuilderImpl = resource.getBuilder()
+        return queryBuilderImpl as QueryBuilderBase
     }
 
-    private fun wantsSpecific() = specificID !== null
+    fun where(initializer: ParameterComposition.() -> Unit) {
+        if (queryBuilderImpl?.where(initializer) === null)
+            throw IllegalStateException("Cannot apply resource filter without resource")
+    }
 
-    abstract fun buildInternal(): QueryBuilder
+    fun matches(id: Int) {
+        if (queryBuilderImpl?.let { it.specificResourceId = id } === null)
+            throw IllegalStateException("Cannot request specific resource without specifying")
+    }
 
-    fun build(): QueryBuilder {
-        buildInternal()
-
-        subQueryBuilders.forEach { it -> parameters.putAll(it.build()) }
-
-        if (specificID != null && parameters.isNotEmpty())
-            throw IllegalStateException("Cannot build Query with specific id and search parameters.")
-
-        if (wantsSpecific())
-            route += "/" + specificID.toString()
-
-        return this
+    fun build(): QueryBuilderBase {
+        queryBuilderImpl?.build()
+        return queryBuilderImpl as QueryBuilderBase
     }
 }
 
+fun query(initializer: QueryBuilder.() -> Unit): QueryBuilder {
+    return QueryBuilder().apply(initializer)
+}
