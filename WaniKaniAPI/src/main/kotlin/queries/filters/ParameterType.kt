@@ -2,68 +2,84 @@ package queries.filters
 
 
 enum class ParameterType {
-    Nothing {
-        override fun getCondition(): FilterParameter = NothingFilterParameter()
-    },
     Hidden {
-        override fun getCondition(): FilterParameter = HiddenParameter(this)
+        override fun getCondition(): FilterParameter = BooleanFilterParameterImpl(hiddenParam, this)
     },
     Ids {
-        override fun getCondition(): FilterParameter = IdsParameter(this)
+        override fun getCondition(): FilterParameter = IntListFilterParameterImpl(idsParam, this)
     },
     AssignmentIds {
-        override fun getCondition(): FilterParameter = AssignmentIdsParameter(this)
+        override fun getCondition(): FilterParameter =
+            IntListFilterParameterImpl(assignmentIdsParam, this)
     },
     AvailableAfter {
-        override fun getCondition(): FilterParameter = AvailableAfterParameter(this)
+        override fun getCondition(): FilterParameter =
+            DateFilterParameterImpl(availableAfterParam, this)
     },
     AvailableBefore {
-        override fun getCondition(): FilterParameter = AvailableBeforeParameter(this)
+        override fun getCondition(): FilterParameter =
+            DateFilterParameterImpl(availableBeforeParam, this)
     },
     Burned {
-        override fun getCondition(): FilterParameter = BurnedParameter(this)
+        override fun getCondition(): FilterParameter = BooleanFilterParameterImpl(burnedParam, this)
     },
     ImmediatelyAvailableForLessons {
-        override fun getCondition(): FilterParameter = ImmediatelyAvailableForLessonsParameter(this)
+        override fun getCondition(): FilterParameter = NothingFilterParameterImpl(
+            immediatelyAvailableForLessonsParam, this
+        )
     },
     ImmediatelyAvailableForReview {
-        override fun getCondition(): FilterParameter = ImmediatelyAvailableForReviewParameter(this)
+        override fun getCondition(): FilterParameter = NothingFilterParameterImpl(
+            immediatelyAvailableForReviewParam, this
+        )
     },
     InReview {
-        override fun getCondition(): FilterParameter = InReviewParameter(this)
+        override fun getCondition(): FilterParameter =
+            NothingFilterParameterImpl(inReviewParam, this)
     },
     Levels {
-        override fun getCondition(): FilterParameter = LevelsParameter(this)
+        override fun getCondition(): FilterParameter = IntListFilterParameterImpl(levelsParam, this)
     },
     PercentagesLessThan {
-        override fun getCondition(): FilterParameter = PercentagesLessThanParameter(this)
+        override fun getCondition(): FilterParameter =
+            IntFilterParameterImpl(percentagesLessThan, this)
     },
     PercentagesGreaterThan {
-        override fun getCondition(): FilterParameter = PercentagesGreaterThanParameter(this)
+        override fun getCondition(): FilterParameter =
+            IntFilterParameterImpl(percentagesGreaterThan, this)
     },
     Slugs {
-        override fun getCondition(): FilterParameter = SlugsParameter(this)
+        override fun getCondition(): FilterParameter =
+            StringListFilterParameterImpl(slugsParam, this)
     },
     SrsStages {
-        override fun getCondition(): FilterParameter = SrsStagesParameter(this)
+        override fun getCondition(): FilterParameter =
+            IntListFilterParameterImpl(srsStagesParam, this)
     },
     Started {
-        override fun getCondition(): FilterParameter = StartedParameter(this)
+        override fun getCondition(): FilterParameter =
+            BooleanFilterParameterImpl(startedParam, this)
     },
     SubjectIds {
-        override fun getCondition(): FilterParameter = SubjectIdsParameter(this)
+        override fun getCondition(): FilterParameter =
+            IntListFilterParameterImpl(subjectIdsParam, this)
     },
     SubjectTypes {
-        override fun getCondition(): FilterParameter = SubjectTypesParameter(this)
+        override fun getCondition(): FilterParameter = SubjectTypeListFilterParameterImpl(
+            subjectTypesParam, this
+        )
     },
     Types {
-        override fun getCondition(): FilterParameter = TypesParameter(this)
+        override fun getCondition(): FilterParameter =
+            SubjectTypeListFilterParameterImpl(typesParam, this)
     },
     Unlocked {
-        override fun getCondition(): FilterParameter = UnlockedParameter(this)
+        override fun getCondition(): FilterParameter =
+            BooleanFilterParameterImpl(unlockedParam, this)
     },
     UpdatedAfter {
-        override fun getCondition(): FilterParameter = UpdatedAfterParameter(this)
+        override fun getCondition(): FilterParameter =
+            DateFilterParameterImpl(updatedAfterParam, this)
     };
 
     abstract fun getCondition(): FilterParameter

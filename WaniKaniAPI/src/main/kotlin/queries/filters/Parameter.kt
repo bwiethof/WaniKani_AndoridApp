@@ -14,6 +14,7 @@ interface FilterParameter {
 // TODO look for checked cast variant to set type
 @Suppress("UNCHECKED_CAST")
 abstract class FilterParameterImpl<T : Any>(
+    override val queryParam: String,
     override val parameterType: ParameterType
 ) :
     FilterParameter {
@@ -23,40 +24,43 @@ abstract class FilterParameterImpl<T : Any>(
     }
 }
 
-abstract class IntFilterParameterImpl(type: ParameterType) : FilterParameterImpl<Int>(type) {
+class IntFilterParameterImpl(queryParam: String, type: ParameterType) :
+    FilterParameterImpl<Int>(queryParam, type) {
     override fun getParameterPair(): Pair<String, String>? {
         return data?.let { Pair(queryParam, it.toString()) }
     }
 }
 
-abstract class IntListFilterParameterImpl(type: ParameterType) :
-    FilterParameterImpl<List<Int>>(type) {
+class IntListFilterParameterImpl(queryParam: String, type: ParameterType) :
+    FilterParameterImpl<List<Int>>(queryParam, type) {
     override fun getParameterPair(): Pair<String, String>? {
         return data?.let { Pair(queryParam, it.joinToString(",")) }
     }
 }
 
-abstract class BooleanFilterParameterImpl(type: ParameterType) :
-    FilterParameterImpl<Boolean>(type) {
+class BooleanFilterParameterImpl(queryParam: String, type: ParameterType) :
+    FilterParameterImpl<Boolean>(queryParam, type) {
     override fun getParameterPair(): Pair<String, String>? {
         return data?.let { Pair(queryParam, it.toString()) }
     }
 }
 
-abstract class StringFilterParameterImpl(type: ParameterType) : FilterParameterImpl<String>(type) {
+class StringFilterParameterImpl(queryParam: String, type: ParameterType) :
+    FilterParameterImpl<String>(queryParam, type) {
     override fun getParameterPair(): Pair<String, String>? {
         return data?.let { Pair(queryParam, it) }
     }
 }
 
-abstract class StringListFilterParameterImpl(type: ParameterType) :
-    FilterParameterImpl<List<String>>(type) {
+class StringListFilterParameterImpl(queryParam: String, type: ParameterType) :
+    FilterParameterImpl<List<String>>(queryParam, type) {
     override fun getParameterPair(): Pair<String, String>? {
         return data?.let { Pair(queryParam, it.joinToString(",")) }
     }
 }
 
-abstract class DateFilterParameterImpl(type: ParameterType) : FilterParameterImpl<Date>(type) {
+class DateFilterParameterImpl(queryParam: String, type: ParameterType) :
+    FilterParameterImpl<Date>(queryParam, type) {
     override fun setValue(value: Any?) {
         if (!(value as Date).isValid())
             throw IllegalArgumentException("Date $value does not match the expected ISO 8601 Format")
@@ -68,8 +72,8 @@ abstract class DateFilterParameterImpl(type: ParameterType) : FilterParameterImp
     }
 }
 
-abstract class SubjectTypeListFilterParameterImpl(type: ParameterType) :
-    FilterParameterImpl<List<Subject.Type>>(type) {
+class SubjectTypeListFilterParameterImpl(queryParam: String, type: ParameterType) :
+    FilterParameterImpl<List<Subject.Type>>(queryParam, type) {
     override fun getParameterPair(): Pair<String, String>? {
         return data?.let { types ->
             Pair(queryParam, types.joinToString { it.toString() })
@@ -77,13 +81,13 @@ abstract class SubjectTypeListFilterParameterImpl(type: ParameterType) :
     }
 }
 
-abstract class NothingFilterParameterImpl(type: ParameterType) :
-    FilterParameterImpl<Nothing>(type) {
+class NothingFilterParameterImpl(queryParam: String, type: ParameterType) :
+    FilterParameterImpl<Nothing>(queryParam, type) {
     override fun setValue(value: Any?) {
         // Nothing needs to be set
     }
 
-    override fun getParameterPair(): Pair<String, String>? {
+    override fun getParameterPair(): Pair<String, String> {
         return Pair(queryParam, "")
     }
 }
