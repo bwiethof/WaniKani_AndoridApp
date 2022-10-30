@@ -2,12 +2,6 @@ package queries.filters
 
 
 enum class ParameterType {
-    Hidden {
-        override fun getCondition(): FilterParameter = BooleanFilterParameterImpl(hiddenParam, this)
-    },
-    Ids {
-        override fun getCondition(): FilterParameter = IntListFilterParameterImpl(idsParam, this)
-    },
     AssignmentIds {
         override fun getCondition(): FilterParameter =
             IntListFilterParameterImpl(assignmentIdsParam, this)
@@ -22,6 +16,12 @@ enum class ParameterType {
     },
     Burned {
         override fun getCondition(): FilterParameter = BooleanFilterParameterImpl(burnedParam, this)
+    },
+    Hidden {
+        override fun getCondition(): FilterParameter = BooleanFilterParameterImpl(hiddenParam, this)
+    },
+    Ids {
+        override fun getCondition(): FilterParameter = IntListFilterParameterImpl(idsParam, this)
     },
     ImmediatelyAvailableForLessons {
         override fun getCondition(): FilterParameter = NothingFilterParameterImpl(

@@ -15,9 +15,15 @@ abstract class QueryBuilderBase(private val acceptedQueryParams: List<ParameterT
 
     private fun specificResourceRequested() = specificResourceId !== null
 
+    fun accepts(parameterType: ParameterType): Boolean {
+        return acceptedQueryParams.contains(parameterType)
+    }
+
     fun build() {
-        if (specificResourceRequested())
+        if (specificResourceRequested()) {
+            filterParameterMap = null
             route += "/$specificResourceId"
+        }
         else
             filterParameterMap = condition?.build() ?: emptyMap()
 
