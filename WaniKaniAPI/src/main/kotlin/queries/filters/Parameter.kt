@@ -2,7 +2,10 @@ package queries.filters
 
 import models.Date
 import models.Subject
-import models.isValid
+import java.time.*
+import java.time.format.DateTimeFormatter
+
+
 
 interface FilterParameter {
     val queryParam: String
@@ -48,7 +51,7 @@ class BooleanFilterParameterImpl(queryParam: String, type: ParameterType) :
 class StringFilterParameterImpl(queryParam: String, type: ParameterType) :
     FilterParameterImpl<String>(queryParam, type) {
     override fun getParameterPair(): Pair<String, String>? {
-        return data?.let { Pair(queryParam, it) }
+        return data?.let { queryParam to it }//Pair(queryParam, it) }
     }
 }
 
@@ -62,8 +65,7 @@ class StringListFilterParameterImpl(queryParam: String, type: ParameterType) :
 class DateFilterParameterImpl(queryParam: String, type: ParameterType) :
     FilterParameterImpl<Date>(queryParam, type) {
     override fun setValue(value: Any?) {
-        if (!(value as Date).isValid())
-            throw IllegalArgumentException("Date $value does not match the expected ISO 8601 Format")
+        DateTimeFormatter.ISO_INSTANT.parse(value as String)
         super.setValue(value)
     }
 
