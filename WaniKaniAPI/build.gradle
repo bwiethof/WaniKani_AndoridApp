@@ -16,7 +16,12 @@ repositories {
     mavenCentral()
 }
 
+test {
+    useJUnitPlatform()
+}
+
 dependencies {
+
     def coroutines_version = '1.5.1'
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-swing:$coroutines_version"
@@ -25,15 +30,18 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-debug:$coroutines_version"
 
 
-    testImplementation 'org.jetbrains.kotlin:kotlin-test-junit'
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    implementation "io.ktor:ktor-server-netty:$ktor_version"
+    def junit_version = "5.9.0"
+    testImplementation("org.jetbrains.kotlin:kotlin-test")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:$junit_version")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junit_version")
+
     implementation "io.ktor:ktor-client-cio:$ktor_version"
     implementation("io.ktor:ktor-client-content-negotiation:$ktor_version")
     implementation("io.ktor:ktor-client-core:$ktor_version")
     implementation("io.ktor:ktor-serialization-kotlinx-json:$ktor_version")
+    implementation("io.ktor:ktor-client-auth:$ktor_version")
     implementation "io.ktor:ktor-serialization-gson:$ktor_version"
-    testImplementation group: 'junit', name: 'junit', version: '4.13.2'
+
 }
 
 test {
