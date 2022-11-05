@@ -1,4 +1,4 @@
-package org.bemi.wanikanisrsapp.ui.main
+package org.bemi.wanikanisrsapp.ui.profile
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.bemi.wanikanisrsapp.data.TokenStore
+
 
 @Composable
 fun ProfileScreen() {
@@ -91,30 +92,6 @@ fun EnterTokenScreen(onContinueClicked: () -> Unit) {
             }
         }
     }
-}
-
-
-@Composable
-fun DashboardScreen() {
-    LazyColumn {
-        repeat(5) {
-            item { PrintScreenName(name = "Dashboard") }
-        }
-    }
-}
-
-@Composable
-fun HomeScreen() {
-    LazyColumn {
-        repeat(5) {
-            item { PrintScreenName(name = "Home") }
-        }
-    }
-}
-
-@Composable
-fun PrintScreenName(name: String) {
-    Text(modifier = Modifier.padding(10.dp), text = "Hello $name!")
 }
 
 @Preview(showBackground = true, widthDp = 720, heightDp = 1280)

@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">WaniKani SRS App</string>
-    <string name="title_activity_jc_dashboard">JcDashboardActivity</string>
+    <string name="title_activity_wani_kani">WaniKaniActivity</string>
 </resources>
