@@ -10,6 +10,8 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.bemi.wanikanisrsapp.data.TokenStore
@@ -20,10 +22,12 @@ fun ProfileScreen() {
     var tokenExists by rememberSaveable {
         mutableStateOf(TokenStore.tokenExists())
     }
-    if (tokenExists) {
-        ProfileDataScreen()
-    } else {
-        EnterTokenScreen(onContinueClicked = { tokenExists = true })
+    Surface(modifier = Modifier.semantics { contentDescription = "Profile Screen" }) {
+        if (tokenExists) {
+            ProfileDataScreen()
+        } else {
+            EnterTokenScreen(onContinueClicked = { tokenExists = true })
+        }
     }
 }
 
@@ -51,7 +55,7 @@ fun ProfileDataScreen() {
 @Composable
 fun EnterTokenScreen(onContinueClicked: () -> Unit) {
     var text by rememberSaveable { mutableStateOf(TokenStore.token) }
-    Surface {
+    Surface() {
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
