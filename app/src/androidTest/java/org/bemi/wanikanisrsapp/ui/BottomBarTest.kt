@@ -12,7 +12,7 @@ class BottomBarTest {
     @get:Rule
     val composeTestRule = createComposeRule()
 
-    private fun setupBottomBar(currentScreen: WaniKaniDestination = Dashboard) {
+    private fun setupBottomBar(currentScreen: AppDestination = Dashboard) {
         composeTestRule.setContent {
             BottomNavigationBar(
                 selectableScreens = navigationItems,

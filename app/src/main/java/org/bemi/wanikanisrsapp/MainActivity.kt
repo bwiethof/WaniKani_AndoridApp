@@ -21,19 +21,19 @@ import androidx.navigation.compose.rememberNavController
 import org.bemi.wanikanisrsapp.navigation.*
 import org.bemi.wanikanisrsapp.ui.theme.WaniKaniSRSAppTheme
 
-class WaniKaniActivity : ComponentActivity() {
+class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             WaniKaniSRSAppTheme {
-                WaniKaniApp()
+                SrsApp()
             }
         }
     }
 }
 
 @Composable
-fun WaniKaniApp() {
+fun SrsApp() {
     val navController = rememberNavController()
     val currentBackStack by navController.currentBackStackEntryAsState()
     val currentDestination = currentBackStack?.destination
@@ -54,7 +54,7 @@ fun WaniKaniApp() {
             )
         },
     ) { innerPadding ->
-        WaniKaniNavHost(
+        AppNavHost(
             navController = navController,
             modifier = Modifier.padding(innerPadding),
         )
@@ -69,9 +69,9 @@ fun TopBar(testTitle: String) {
 
 @Composable
 fun BottomNavigationBar(
-    selectableScreens: List<WaniKaniDestination>,
-    onTabSelected: (WaniKaniDestination) -> Unit,
-    currentScreen: WaniKaniDestination
+    selectableScreens: List<AppDestination>,
+    onTabSelected: (AppDestination) -> Unit,
+    currentScreen: AppDestination
 ) {
     NavigationBar {
         selectableScreens.forEach { screen ->
@@ -98,7 +98,7 @@ fun BottomNavigationBar(
 @Composable
 fun DefaultPreviewDark() {
     WaniKaniSRSAppTheme {
-        WaniKaniApp()
+        SrsApp()
     }
 }
 
@@ -109,6 +109,6 @@ fun DefaultPreviewDark() {
 @Composable
 fun DefaultPreviewLight() {
     WaniKaniSRSAppTheme {
-        WaniKaniApp()
+        SrsApp()
     }
 }

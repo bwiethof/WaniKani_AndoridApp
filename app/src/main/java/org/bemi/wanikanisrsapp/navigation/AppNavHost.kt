@@ -10,7 +10,7 @@ import org.bemi.wanikanisrsapp.ui.home.HomeScreen
 import org.bemi.wanikanisrsapp.ui.profile.ProfileScreen
 
 @Composable
-fun WaniKaniNavHost(
+fun AppNavHost(
     navController: NavHostController,
     modifier: Modifier = Modifier
 ) {

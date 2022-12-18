@@ -26,7 +26,7 @@ class BottomNavigationBarTest {
             navController = TestNavHostController(LocalContext.current)
             // Sets a ComposeNavigator to the navController so it can navigate through composables
             navController.navigatorProvider.addNavigator(ComposeNavigator())
-            WaniKaniNavHost(navController = navController)
+            AppNavHost(navController = navController)
             BottomNavigationBar(
                 selectableScreens = navigationItems,
                 onTabSelected = { screen -> navController.navigateSingleTopTo(screen.route) },
