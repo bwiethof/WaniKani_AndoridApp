@@ -32,6 +32,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SrsApp() {
     val navController = rememberNavController()
@@ -42,7 +43,7 @@ fun SrsApp() {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
-            TopBar(testTitle = "Test")
+            TopBar(testTitle = currentScreen.title)
         },
         bottomBar = {
             BottomNavigationBar(
@@ -64,7 +65,10 @@ fun SrsApp() {
 // TopBar
 @Composable
 fun TopBar(testTitle: String) {
-    CenterAlignedTopAppBar(title = { Text(text = testTitle) })
+    CenterAlignedTopAppBar(
+        title = { Text(text = testTitle) },
+        colors = TopAppBarDefaults.centerAlignedTopAppBarColors()
+    )
 }
 
 @Composable
