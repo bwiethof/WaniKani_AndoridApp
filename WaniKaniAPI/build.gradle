@@ -12,10 +12,6 @@ plugins {
 group = 'me.bene'
 version = '1.0-SNAPSHOT'
 
-repositories {
-    mavenCentral()
-}
-
 test {
     useJUnitPlatform()
 }
