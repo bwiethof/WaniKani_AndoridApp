@@ -1,6 +1,9 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'com.google.dagger.hilt.android'
+    id 'kotlin-kapt'
+    id "com.google.protobuf" version "0.8.17"
 }
 
 android {
@@ -52,6 +55,14 @@ android {
 dependencies {
 
     implementation project(":WaniKaniAPI")
+    implementation 'androidx.room:room-common:2.5.0'
+    implementation "androidx.datastore:datastore:1.0.0"
+    implementation "com.google.protobuf:protobuf-javalite:3.18.0"
+
+    // Hilt dependency injection
+    implementation "com.google.dagger:hilt-android:2.44"
+    kapt "com.google.dagger:hilt-compiler:2.44"
+    implementation "androidx.hilt:hilt-navigation-compose:1.0.0"
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.core:core-ktx:1.8.0'
@@ -78,4 +89,29 @@ dependencies {
 
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
     debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
+}
+
+// Allow references to generated code
+kapt {
+    correctErrorTypes true
+}
+
+// Protobuf configuration
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:3.18.0"
+    }
+
+    // Generates the java Protobuf-lite code for the Protobufs in this project. See
+    // https://github.com/google/protobuf-gradle-plugin#customizing-protobuf-compilation
+    // for more information.
+    generateProtoTasks {
+        all().each { task ->
+            task.builtins {
+                java {
+                    option 'lite'
+                }
+            }
+        }
+    }
 }

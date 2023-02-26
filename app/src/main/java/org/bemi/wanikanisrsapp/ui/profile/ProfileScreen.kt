@@ -13,20 +13,20 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import org.bemi.wanikanisrsapp.ui.theme.Typography
 
 
 @Composable
-fun ProfileScreen(profileViewModel: ProfileViewModel = viewModel()) {
-    var tokenExists by rememberSaveable {
+fun ProfileScreen(profileViewModel: ProfileViewModel = hiltViewModel()) {
+    var hasToken by rememberSaveable {
         mutableStateOf(profileViewModel.tokenExists())
     }
     Surface(modifier = Modifier.semantics { contentDescription = "Profile Screen" }) {
-        if (tokenExists) {
+        if (hasToken) {
             ProfileDataScreen(profileViewModel)
         } else {
-            EnterTokenScreen(onContinueClicked = { tokenExists = true }, profileViewModel)
+            EnterTokenScreen(onContinueClicked = { hasToken = true }, profileViewModel)
         }
     }
 }
@@ -60,7 +60,7 @@ fun ProfileDataScreen(viewModel: ProfileViewModel) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EnterTokenScreen(onContinueClicked: () -> Unit, viewModel: ProfileViewModel) {
-    var text by rememberSaveable { mutableStateOf(viewModel.getUserToken()) }
+    var text by rememberSaveable { mutableStateOf("") }
     Surface() {
         LazyColumn(
             modifier = Modifier
@@ -142,7 +142,7 @@ fun DataSection(title: String, userInfo: UserInfoItems) {
                         run {
                             Text(
                                 modifier = Modifier.padding(4.dp),
-                                text = entry.value,
+                                text = entry.value ?: "",
                                 textAlign = TextAlign.End
                             )
                         }
