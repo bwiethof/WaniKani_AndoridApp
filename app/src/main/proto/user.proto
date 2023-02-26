@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+option java_package = "org.bemi.wanikanisrsapp.user";
+option java_multiple_files = true;
+
+message Token {
+  uint64 last_updated = 2;
+  string token = 1;
+}
+
+message Profile {
+  uint64 last_updated = 1;
+  string current_vacation_started_at = 2;
+  string id = 3;
+  uint32 level = 4;
+  string profile_url = 5;
+  string started_at = 6;
+  string username = 7;
+}
+
+message Subscription {
+  uint64 last_updated = 1;
+  bool active = 2;
+  uint32 max_level_granted = 3;
+  string period_ends_at = 4;
+  string type = 5;
+}
+
