@@ -61,7 +61,7 @@ fun ProfileDataScreen(viewModel: ProfileViewModel) {
 @Composable
 fun EnterTokenScreen(onContinueClicked: () -> Unit, viewModel: ProfileViewModel) {
     var text by rememberSaveable { mutableStateOf("") }
-    Surface() {
+    Surface {
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
@@ -113,7 +113,7 @@ fun DataSection(title: String, userInfo: UserInfoItems) {
             .fillMaxWidth(),
         shape = MaterialTheme.shapes.small,
     ) {
-        Column() {
+        Column {
             Row(
                 modifier = Modifier.padding(8.dp, 4.dp),
                 horizontalArrangement = Arrangement.SpaceBetween
