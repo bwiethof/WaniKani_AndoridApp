@@ -2,7 +2,7 @@ package org.bemi.wanikanisrsapp.models
 
 import models.User
 
-class MutableUser() {
+class MutableUser {
     var currentVacationStartedAt: String = ""
     var id: String = ""
     var level: Int = 0
@@ -36,7 +36,3 @@ fun User.toMutable() = this.let {
         username = it.username
     }
 }
-
-
-
-

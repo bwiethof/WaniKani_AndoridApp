@@ -18,9 +18,7 @@ data class Report<T>(
     val url: String,
     @SerialName("object") val obj: String,
     val data: T
-) {
-
-}
+)
 
 @Serializable
 data class Collection<T>(
