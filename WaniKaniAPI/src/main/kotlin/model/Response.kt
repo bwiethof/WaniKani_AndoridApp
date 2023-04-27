@@ -1,4 +1,4 @@
-package models
+package model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -20,6 +20,9 @@ data class Report<T>(
     val data: T
 ) {
 
+    init {
+        require(data!!::class == Summary::class)
+    }
 }
 
 @Serializable

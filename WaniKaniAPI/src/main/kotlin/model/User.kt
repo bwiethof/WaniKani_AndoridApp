@@ -1,10 +1,10 @@
-package models
+package model
 
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class User(
-    val current_vacation_started_at: String,
+    val current_vacation_started_at: String?,
     val id: String,
     val level: Int,
     val preferences: Preferences,
