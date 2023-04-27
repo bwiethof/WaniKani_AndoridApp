@@ -1,14 +1,13 @@
 package queries.filters
 
+import model.Subject
 import org.junit.jupiter.api.Assertions.assertAll
-import org.junit.jupiter.api.function.Executable
-import kotlin.test.assertEquals
-import kotlin.test.assertFails
-
-import models.Subject
 import org.junit.jupiter.api.DynamicTest
 import org.junit.jupiter.api.TestFactory
+import org.junit.jupiter.api.function.Executable
 import kotlin.reflect.full.primaryConstructor
+import kotlin.test.assertEquals
+import kotlin.test.assertFails
 
 class ParameterTest {
 

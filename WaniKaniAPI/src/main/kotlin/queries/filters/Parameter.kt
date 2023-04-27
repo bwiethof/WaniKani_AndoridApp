@@ -1,7 +1,7 @@
 package queries.filters
 
-import models.Date
-import models.Subject
+import model.Date
+import model.Subject
 import java.time.*
 import java.time.format.DateTimeFormatter
 
