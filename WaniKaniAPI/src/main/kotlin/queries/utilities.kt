@@ -1,6 +1,6 @@
 package queries
 
-import models.Subject
+import model.Subject
 
 fun MutableList<Subject.Type>.addIfNotExist(other: List<Subject.Type>): MutableList<Subject.Type> {
     other.forEach {

@@ -37,3 +37,15 @@ enum class Resource {
 
     abstract fun getBuilder(): QueryBuilderBase
 }
+
+fun model.Assignment.getResource() = Resource.Assignments
+fun model.LevelProgression.getResource() = Resource.LevelProgressions
+fun model.Reset.getResource() = Resource.Resets
+fun model.Review.getResource() = Resource.Reviews
+fun model.ReviewStatistic.getResource() = Resource.ReviewsStatistics
+fun model.SpacedRepetitionSystem.getResource() = Resource.SpacedRepetitionSystem
+fun model.StudyMaterial.getResource() = Resource.StudyMaterials
+fun model.Subject.getResource() = Resource.Subjects
+fun model.Summary.getResource() = Resource.Summary
+fun model.User.getResource() = Resource.User
+fun model.VoiceActor.getResource() = Resource.VoiceActors

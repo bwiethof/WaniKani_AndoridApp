@@ -1,4 +1,4 @@
-package models
+package model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -18,7 +18,12 @@ data class Report<T>(
     val url: String,
     @SerialName("object") val obj: String,
     val data: T
-)
+) {
+
+    init {
+        require(data!!::class == Summary::class)
+    }
+}
 
 @Serializable
 data class Collection<T>(
