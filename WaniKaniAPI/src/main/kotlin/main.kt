@@ -1,13 +1,21 @@
+import client.WaniKaniClient
+import kotlinx.coroutines.runBlocking
 import queries.Resource
 import queries.filters.ParameterType
 import queries.query
 
-fun main(args: Array<String>) {
+fun main(args: Array<String>) = runBlocking {
     println("Hello World!")
-
-/*    val service = WaniKaniService()
     val token = "a7543476-9981-49c7-905b-3c316acee7f7"
-    service.init(token)*/
+
+    val client = WaniKaniClient(token)
+    val assignments = client.getAssignments {
+        where {
+            ParameterType.Hidden eq false
+        }
+    }
+    println(assignments.toString())
+
 
     val assignmentParameters = query {
         from(Resource.Assignments)
@@ -16,6 +24,8 @@ fun main(args: Array<String>) {
             ParameterType.SubjectIds eq listOf(1, 2, 3)
         }
     }.build()
+
+    println(assignmentParameters)
 
     val singleAssignment = query {
         from(Resource.Assignments)
