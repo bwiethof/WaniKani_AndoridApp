@@ -1,6 +1,6 @@
 package org.bemi.wanikanisrsapp.models
 
-import models.User
+import model.User
 
 class MockData {
 

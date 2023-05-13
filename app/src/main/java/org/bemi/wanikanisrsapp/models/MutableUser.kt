@@ -1,9 +1,9 @@
-package org.bemi.wanikanisrsapp.models
+package org.bemi.wanikanisrsapp.model
 
-import models.User
+import model.User
 
 class MutableUser {
-    var currentVacationStartedAt: String = ""
+    var currentVacationStartedAt: String? = ""
     var id: String = ""
     var level: Int = 0
     lateinit var preferences: User.Preferences
