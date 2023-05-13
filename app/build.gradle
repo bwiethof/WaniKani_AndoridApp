@@ -89,6 +89,22 @@ dependencies {
 
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
     debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
+
+    def ktor_version = '2.1.0'
+    implementation "io.ktor:ktor-client-cio:$ktor_version"
+    implementation("io.ktor:ktor-client-content-negotiation:$ktor_version")
+    implementation("io.ktor:ktor-client-core:$ktor_version")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktor_version")
+    implementation("io.ktor:ktor-client-auth:$ktor_version")
+    implementation "io.ktor:ktor-serialization-gson:$ktor_version"
+
+    def coroutines_version = '1.5.1'
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-swing:$coroutines_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:$coroutines_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-slf4j:$coroutines_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-debug:$coroutines_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
 }
 
 // Allow references to generated code
