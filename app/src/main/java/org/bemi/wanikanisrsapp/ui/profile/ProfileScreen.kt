@@ -14,6 +14,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import kotlinx.coroutines.launch
 import org.bemi.wanikanisrsapp.ui.theme.Typography
 
 
@@ -61,6 +62,8 @@ fun ProfileDataScreen(viewModel: ProfileViewModel) {
 @Composable
 fun EnterTokenScreen(onContinueClicked: () -> Unit, viewModel: ProfileViewModel) {
     var text by rememberSaveable { mutableStateOf("") }
+    val scope = rememberCoroutineScope()
+
     Surface {
         LazyColumn(
             modifier = Modifier
@@ -92,7 +95,7 @@ fun EnterTokenScreen(onContinueClicked: () -> Unit, viewModel: ProfileViewModel)
             item {
                 OutlinedButton(
                     modifier = Modifier.padding(vertical = 24.dp), onClick = {
-                        if (viewModel.isTokenValid(text)) viewModel.updateToken(text)
+                        if (viewModel.isTokenValid(text)) scope.launch { viewModel.updateToken(text) }
                         onContinueClicked()
                     }, enabled = viewModel.isTokenValid(text)
 
@@ -113,33 +116,38 @@ fun DataSection(title: String, userInfo: UserInfoItems) {
             .fillMaxWidth(),
         shape = MaterialTheme.shapes.small,
     ) {
-        Column {
+        Column(modifier = Modifier.fillMaxWidth()) {
             Row(
                 modifier = Modifier.padding(8.dp, 4.dp),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(style = Typography.titleLarge, text = title, modifier = Modifier.padding(8.dp))
             }
-            Row(
-                modifier = Modifier
-                    .padding(8.dp, 4.dp)
-                    .fillMaxWidth()
-                    .animateContentSize(
-                    ), horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Column(horizontalAlignment = Alignment.Start) {
-                    userInfo.forEach { entry ->
-                        run {
+
+            userInfo.forEach { entry ->
+
+                run {
+                    Row(
+                        modifier = Modifier
+                            .padding(8.dp, 4.dp)
+                            .fillMaxWidth()
+                            .animateContentSize(
+                            ), horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Column(
+                            horizontalAlignment = Alignment.Start,
+                            modifier = Modifier.weight(0.5f)
+                        ) {
+
                             Text(
                                 modifier = Modifier.padding(4.dp), text = entry.key + ":"
                             )
                         }
+                        Column(
+                            horizontalAlignment = Alignment.End,
+                            modifier = Modifier.weight(0.5f)
+                        ) {
 
-                    }
-                }
-                Column(horizontalAlignment = Alignment.End) {
-                    userInfo.forEach { entry ->
-                        run {
                             Text(
                                 modifier = Modifier.padding(4.dp),
                                 text = entry.value ?: "",
