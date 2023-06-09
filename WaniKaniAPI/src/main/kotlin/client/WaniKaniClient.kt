@@ -22,7 +22,7 @@ private const val apiRevisionKey = "Wanikani-Revision"
 
 
 class WaniKaniClient(
-    val token: String,
+    var token: String,
     val waniKaniApiEndpoint: String = "https://api.wanikani.com/v2/",
     val apiRevision: String = "20170710"
 ) {
@@ -53,6 +53,9 @@ class WaniKaniClient(
         }
     }
 
+    fun setNewToken(newToken: String) {
+        token = newToken
+    }
 
     private suspend inline fun <reified T> get(builder: QueryBuilderBase): T {
         val response = client.get {

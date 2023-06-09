@@ -11,15 +11,22 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import org.bemi.wanikanisrsapp.navigation.*
+import org.bemi.wanikanisrsapp.ui.startUp.EnterTokenScreen
+import org.bemi.wanikanisrsapp.ui.startUp.TokenViewModel
 import org.bemi.wanikanisrsapp.ui.theme.WaniKaniSRSAppTheme
 
 @AndroidEntryPoint
@@ -36,33 +43,51 @@ class MainActivity : ComponentActivity() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SrsApp() {
+fun SrsApp(srsViewModel: TokenViewModel = hiltViewModel()) {
     val navController = rememberNavController()
     val currentBackStack by navController.currentBackStackEntryAsState()
     val currentDestination = currentBackStack?.destination
     val currentScreen =
         navigationItems.find { it.route == currentDestination?.route } ?: Dashboard
-    Scaffold(
-        modifier = Modifier.fillMaxSize(),
-        topBar = {
-            TopBar(testTitle = currentScreen.title)
-        },
-        bottomBar = {
-            BottomNavigationBar(
-                selectableScreens = navigationItems,
-                onTabSelected = { screen ->
-                    navController.navigateSingleTopTo(screen.route)
-                },
-                currentScreen = currentScreen
+
+    val uiState by srsViewModel.uiState.collectAsState()
+    var hasToken by rememberSaveable {
+        mutableStateOf(uiState.tokenExists)
+    }
+
+    if (uiState.tokenExists) {
+        Scaffold(
+            modifier = Modifier.fillMaxSize(),
+            topBar = {
+                TopBar(testTitle = currentScreen.title)
+            },
+            bottomBar = {
+                BottomNavigationBar(
+                    selectableScreens = navigationItems,
+                    onTabSelected = { screen ->
+                        navController.navigateSingleTopTo(screen.route)
+                    },
+                    currentScreen = currentScreen
+                )
+            },
+        ) { innerPadding ->
+            AppNavHost(
+                navController = navController,
+                modifier = Modifier.padding(innerPadding),
             )
-        },
-    ) { innerPadding ->
-        AppNavHost(
-            navController = navController,
-            modifier = Modifier.padding(innerPadding),
-        )
+        }
+    } else {
+        println("No Token in Startup")
+        srsViewModel.updateUserToken()
+        if (!uiState.tokenUpdated) {
+            println("No Token in cache")
+            EnterTokenScreen(onContinueClicked = {
+                hasToken = true
+            }, srsViewModel)
+        }
     }
 }
+
 
 // TopBar
 @Composable
