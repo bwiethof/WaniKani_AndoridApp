@@ -18,12 +18,7 @@ data class Report<T>(
     val url: String,
     @SerialName("object") val obj: String,
     val data: T
-) {
-
-    init {
-        require(data!!::class == Summary::class)
-    }
-}
+)
 
 @Serializable
 data class Collection<T>(

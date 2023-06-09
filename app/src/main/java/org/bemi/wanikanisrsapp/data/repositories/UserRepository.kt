@@ -124,6 +124,7 @@ class UserRepository @Inject constructor(
                 )
             ).build()
         }
+        client.setNewToken(userToken)
     }
 
     private suspend fun updateUserSubscription(userSubscription: Subscription?) {

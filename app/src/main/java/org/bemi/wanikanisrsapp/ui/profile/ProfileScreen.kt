@@ -1,11 +1,20 @@
 package org.bemi.wanikanisrsapp.ui.profile
 
 import androidx.compose.animation.animateContentSize
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.material3.Divider
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.contentDescription
@@ -14,26 +23,20 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import kotlinx.coroutines.launch
 import org.bemi.wanikanisrsapp.ui.theme.Typography
 
 
 @Composable
 fun ProfileScreen(profileViewModel: ProfileViewModel = hiltViewModel()) {
-    var hasToken by rememberSaveable {
-        mutableStateOf(profileViewModel.tokenExists())
-    }
     Surface(modifier = Modifier.semantics { contentDescription = "Profile Screen" }) {
-        if (hasToken) {
-            ProfileDataScreen(profileViewModel)
-        } else {
-            EnterTokenScreen(onContinueClicked = { hasToken = true }, profileViewModel)
-        }
+        ProfileDataScreen(profileViewModel)
     }
 }
 
 @Composable
 fun ProfileDataScreen(viewModel: ProfileViewModel) {
+    val uiState by viewModel.uiState.collectAsState()
+
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -41,72 +44,21 @@ fun ProfileDataScreen(viewModel: ProfileViewModel) {
         verticalArrangement = Arrangement.spacedBy(4.dp),
         horizontalAlignment = Alignment.Start
     ) {
-
-        if (viewModel.isUserDataAvailable()) {
-
-            item { DataSection(title = "User Info", viewModel.getUserProfile()) }
-            item { Divider() }
-            item { DataSection(title = "Subscription", viewModel.getUserSubscription()) }
-
-        } else {
-            item {
-                Text(
-                    modifier = Modifier.padding(8.dp), text = "Failed to get User data :("
-                )
-            }
+        item {
+            DataSection(
+                title = "User Info",
+                viewModel.getUserProfile(uiState.userData.profile)
+            )
+        }
+        item { Divider() }
+        item {
+            DataSection(
+                title = "Subscription",
+                viewModel.getUserSubscription(uiState.userData.subscription)
+            )
         }
     }
 }
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun EnterTokenScreen(onContinueClicked: () -> Unit, viewModel: ProfileViewModel) {
-    var text by rememberSaveable { mutableStateOf("") }
-    val scope = rememberCoroutineScope()
-
-    Surface {
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(12.dp),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            item {
-                Column(
-                    horizontalAlignment = Alignment.Start,
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalArrangement = Arrangement.spacedBy(12.dp)
-                ) {
-                    Text(
-                        text = "Please enter your user token for WaniKani."
-                    )
-                    OutlinedTextField(
-                        modifier = Modifier.fillMaxWidth(),
-                        value = (if (text.isEmpty()) "" else text),
-                        onValueChange = {
-                            text = it
-                        },
-                        label = { Text("User Token") },
-                        singleLine = true
-                    )
-                }
-            }
-            item {
-                OutlinedButton(
-                    modifier = Modifier.padding(vertical = 24.dp), onClick = {
-                        if (viewModel.isTokenValid(text)) scope.launch { viewModel.updateToken(text) }
-                        onContinueClicked()
-                    }, enabled = viewModel.isTokenValid(text)
-
-                ) {
-                    Text("Submit Token")
-                }
-            }
-        }
-    }
-}
-
 
 @Composable
 fun DataSection(title: String, userInfo: UserInfoItems) {

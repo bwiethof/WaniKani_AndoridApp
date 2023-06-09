@@ -16,6 +16,6 @@ class WaniKaniClientProvider {
     @Provides
     @Singleton
     fun provideKtorWaniKaniClient(): WaniKaniClient {
-        return WaniKaniClient(token)
+        return WaniKaniClient("")
     }
 }
