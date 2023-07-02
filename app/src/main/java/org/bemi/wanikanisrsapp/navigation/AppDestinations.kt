@@ -1,6 +1,7 @@
 package org.bemi.wanikanisrsapp.navigation
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
@@ -31,4 +32,11 @@ object Profile : AppDestination {
     override val route = "profile"
 }
 
-val navigationItems = listOf(Profile, Dashboard, Home)
+object Token : AppDestination {
+    override val title = "Token"
+    override val icon = Icons.Filled.Edit
+    override val route = "token"
+}
+
+val navigationItems = listOf(Profile, Dashboard, Home, Token)
+val bottomBatItems = listOf(Profile, Dashboard, Home)

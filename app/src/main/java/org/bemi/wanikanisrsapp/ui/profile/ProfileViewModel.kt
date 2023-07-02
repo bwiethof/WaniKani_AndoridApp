@@ -27,6 +27,7 @@ typealias UserInfoItems = Map<String, String?>
 
 data class UserDataState(
     val userData: UserData = UserData(),
+    var updated: Boolean = false
 )
 
 @HiltViewModel
@@ -43,32 +44,35 @@ class ProfileViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            getUserDataFromCache()
-            updateUserDataFromAPI()
+            getCachedUserData()
+            fetchRemoteUserData()
         }
     }
 
-    private suspend fun updateUserDataFromAPI() {
+    private suspend fun fetchRemoteUserData() {
         if (userData.profile == null || isUserDataExpired()) {
             println("Update user data from API")
             withContext(Dispatchers.IO) {
                 userData = userRepository.getUserData()
                 _uiState.update { current -> current.copy(userData = userData) }
             }
+            _uiState.update { current -> current.copy(updated = true) }
         }
     }
 
-    private suspend fun getUserDataFromCache() {
+    private suspend fun getCachedUserData() {
         withContext(Dispatchers.IO) {
             userData = userRepository.getUserDataFromCache()
             _uiState.update { current ->
                 current.copy(userData = userData)
             }
+            _uiState.update { current -> current.copy(updated = false) }
+
         }
         println("Read User Data from Cache")
     }
 
-    fun getUserProfile(profile: Profile?): UserInfoItems {
+    fun toProfileMap(profile: Profile?): UserInfoItems {
         return profile.let {
             mapOf(
                 "Username" to it?.username,
@@ -90,7 +94,7 @@ class ProfileViewModel @Inject constructor(
 
     private val _dateTimePattern = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'"
 
-    fun getUserSubscription(subscription: Subscription?): UserInfoItems {
+    fun toSubscriptionMap(subscription: Subscription?): UserInfoItems {
         return subscription.let {
             mapOf(
                 "Active" to it?.active.toString(),

@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -26,29 +25,39 @@ class TokenViewModel @Inject constructor(
 ) : ViewModel(), CoroutineScope {
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.IO
+    private val scope = CoroutineScope(coroutineContext)
 
     private val _uiState = MutableStateFlow(TokenState())
     val uiState: StateFlow<TokenState> = _uiState.asStateFlow()
 
-    fun updateUserToken() {
-        println("Updating Token from cache")
-        viewModelScope.launch {
-            val token = async { userRepository.getStoredUserToken() }
-            val tokenExists = isTokenValid(token.await().token)
-            if (tokenExists) {
-                println("Found Token in cache updating UiState")
-                _uiState.update { currentState ->
-                    currentState.copy(
-                        tokenExists = true,
-                        tokenUpdated = true
-                    )
-                }
-                preloadData()
-            }
+    init {
+        scope.launch {
+            fetchUserToken()
         }
     }
 
-    private fun preloadData() {
+    suspend fun fetchUserToken(): Boolean {
+        println("Get Token from cache")
+        val token =
+            userRepository.getStoredUserToken()
+
+        val tokenExists = isTokenValid(token.token)
+        if (tokenExists) {
+            println("Found Token in cache updating UiState")
+            _uiState.update { currentState ->
+                currentState.copy(
+                    tokenExists = true,
+                    tokenUpdated = true
+                )
+            }
+            preloadUserData()
+            return true
+        }
+        return false
+    }
+
+
+    private fun preloadUserData() {
         viewModelScope.launch(Dispatchers.IO) {
             userRepository.getUserData()
         }
@@ -59,9 +68,9 @@ class TokenViewModel @Inject constructor(
         return !token.isNullOrBlank()
     }
 
-    suspend fun updateToken(text: String) {
-        userRepository.updateStoredUserToken(text)
-        updateUserToken()
+    suspend fun updateToken(newToken: String) {
+        userRepository.setToken(newToken)
+        fetchUserToken()
     }
 
 }
