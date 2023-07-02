@@ -43,6 +43,7 @@ class WaniKaniClient(
                     loadTokens {
                         BearerTokens(token, "")
                     }
+                    refreshTokens { BearerTokens(token, "") }
                 }
             }
             expectSuccess = true

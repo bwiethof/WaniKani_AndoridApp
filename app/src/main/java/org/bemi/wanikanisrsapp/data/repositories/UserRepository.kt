@@ -22,9 +22,9 @@ import kotlin.coroutines.CoroutineContext
 
 
 class UserRepository @Inject constructor(
-    private val userProfileStore: DataStore<Profile>,
-    private val userSubscriptionStore: DataStore<Subscription>,
-    private val userTokenStore: DataStore<Token>,
+    private val profileStore: DataStore<Profile>,
+    private val subscriptionStore: DataStore<Subscription>,
+    private val tokenStore: DataStore<Token>,
     private val client: WaniKaniClient
 ) : CoroutineScope {
 
@@ -34,7 +34,7 @@ class UserRepository @Inject constructor(
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.IO
 
-    private val userProfileFlow: Flow<Profile> = userProfileStore.data.catch { exception ->
+    private val profileFlow: Flow<Profile> = profileStore.data.catch { exception ->
         if (exception is IOException) {
             Log.e(loggingTag, "Error reading User Profile.", exception)
             emit(Profile.getDefaultInstance())
@@ -43,7 +43,7 @@ class UserRepository @Inject constructor(
         }
     }
 
-    private val userTokenFlow: Flow<Token> = userTokenStore.data.catch { exception ->
+    private val tokenFlow: Flow<Token> = tokenStore.data.catch { exception ->
         if (exception is IOException) {
             Log.e(loggingTag, "Error reading User Token.", exception)
             emit(Token.getDefaultInstance())
@@ -52,8 +52,8 @@ class UserRepository @Inject constructor(
         }
     }
 
-    private val userSubscriptionFlow: Flow<Subscription> =
-        userSubscriptionStore.data.catch { exception ->
+    private val subscriptionFlow: Flow<Subscription> =
+        subscriptionStore.data.catch { exception ->
             if (exception is IOException) {
                 Log.e(loggingTag, "Error reading User Subscription.", exception)
                 emit(Subscription.getDefaultInstance())
@@ -63,8 +63,8 @@ class UserRepository @Inject constructor(
         }
 
     suspend fun getUserDataFromCache(): UserData {
-        val cachedProfile = userProfileFlow.first()
-        val cachedSubscription = userSubscriptionFlow.first()
+        val cachedProfile = profileFlow.first()
+        val cachedSubscription = subscriptionFlow.first()
         return UserData(cachedProfile, cachedSubscription)
     }
 
@@ -73,7 +73,7 @@ class UserRepository @Inject constructor(
         // Cached data should rather be returned than an error in case of failure.
         try {
 
-            val user = UserData.fromWaniKaniUser(getUserDataFromWaniKani())
+            val user = UserData.fromWaniKaniUser(fetchRemoteUser())
 
             val job = scope.launch {
                 updateStoredUserProfile(user.profile)
@@ -89,15 +89,14 @@ class UserRepository @Inject constructor(
         }
     }
 
-    private suspend fun getUserDataFromWaniKani(): User {
-        val user = client.getUser()
-        return user.data
+    private suspend fun fetchRemoteUser(): User {
+        return client.getUser().data
     }
 
     private suspend fun updateStoredUserProfile(profile: Profile?) {
-        if (profile != null) {
-            userProfileStore.updateData {
-                profile
+        profile?.let {
+            profileStore.updateData {
+                it
             }
         }
 
@@ -105,7 +104,9 @@ class UserRepository @Inject constructor(
 
     suspend fun getStoredUserToken(): Token {
         return try {
-            userTokenFlow.first()
+            val cachedToken = tokenFlow.first()
+            client.setNewToken(cachedToken.token)
+            cachedToken
         } catch (exception: Exception) {
             Log.e(loggingTag, "Error getting User Token from Proto Datastore.", exception)
             Token.newBuilder().setToken("").setLastUpdated(
@@ -116,8 +117,8 @@ class UserRepository @Inject constructor(
         }
     }
 
-    suspend fun updateStoredUserToken(userToken: String) {
-        userTokenStore.updateData { token ->
+    suspend fun setToken(userToken: String) {
+        tokenStore.updateData { token ->
             token.toBuilder().setToken(userToken).setLastUpdated(
                 LocalDateTime.now().toEpochSecond(
                     ZoneOffset.UTC
@@ -127,10 +128,10 @@ class UserRepository @Inject constructor(
         client.setNewToken(userToken)
     }
 
-    private suspend fun updateUserSubscription(userSubscription: Subscription?) {
-        if (userSubscription != null) {
-            userSubscriptionStore.updateData {
-                userSubscription
+    private suspend fun updateUserSubscription(subscription: Subscription?) {
+        subscription?.let {
+            subscriptionStore.updateData {
+                it
             }
         }
     }
